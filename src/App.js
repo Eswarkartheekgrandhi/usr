@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import HomePage from "./components/HomePage";
+import SignUpPage from "./components/SignUpPage";
+import USRTablePage from "./components/USRTablePage";
+import StatusPage from "./components/StatusPage";
 
-function App() {
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = (username, password) => {
+    if (username && password) {
+      setIsLoggedIn(true);
+    }
+  };
+
+  const handleSignUp = (username, password) => {
+    console.log("New User Signed Up");
+    console.log("Username:", username);
+    console.log("Password:", password);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/signup"
+          element={<SignUpPage onSignUp={handleSignUp} />}
+        />
+        <Route path="/USR" element={<USRTablePage />} />
+        <Route path="/status" element={<StatusPage />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

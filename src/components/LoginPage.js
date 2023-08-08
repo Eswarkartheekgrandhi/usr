@@ -1,0 +1,57 @@
+// src/LoginPage.js
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/LoginPage.css";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
+import logo from "../images/Group899.png";
+
+const LoginPage = ({ onLogin }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    onLogin(email, password);
+    navigate("/home");
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-form">
+        <img className="logo" src={logo} alt="Logo-here" />
+        {/* <h1>Login Page</h1> */}
+        <div className="holder">
+          <PersonOutlineOutlinedIcon className="user-icon" />
+          <input
+            type="text"
+            placeholder="EMAIL"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="input-field"
+          />
+        </div>
+        <div className="holder">
+          <HttpsOutlinedIcon className="user-icon" />
+          <input
+            type="password"
+            placeholder="PASSWORD"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="input-field"
+          />
+        </div>
+        <button className="input-field" onClick={handleLoginClick}>
+          LOGIN
+        </button>
+
+        <div className="input-links">
+          <Link to="/signup">Sign Up</Link>
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default LoginPage;

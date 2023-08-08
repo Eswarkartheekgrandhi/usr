@@ -1,0 +1,15 @@
+.ico {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Use space-between to separate the buttons */
+  width: 100%; /* Allow the container to take the full width */
+  padding: 10px; /* Add some padding for better spacing */
+}
+
+.ico .right button {
+  margin-left: 10px; /* Add margin to separate the buttons on the right */
+}
+
+.ico button {
+  padding: 8px 16px; /* Adjust padding for the buttons */
+}
