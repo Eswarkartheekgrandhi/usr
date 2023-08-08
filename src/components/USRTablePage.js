@@ -1,19 +1,12 @@
 import React from "react";
 import "../styles/USRTable.css";
+import TopNavBar from "./topNavBar.js";
+import "../styles/topNavBar.css";
 
 function USRTablePage() {
   return (
     <div className="App">
-      <header className="App-header">
-        <div
-          className="logo-container"
-          style={{ position: "absolute", top: "20px", left: "20px" }}
-        >
-          {/* <img src="logo.png" alt="logo-here" className="logo" />
-           */}
-          Logo
-        </div>
-      </header>
+      <TopNavBar />
       <div className="ba">
         <button>Back</button>
       </div>

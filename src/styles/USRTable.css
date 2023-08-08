@@ -9,7 +9,6 @@
 .App .ba button {
   border: none;
   position: relative;
-  top: 50px;
   text-transform: lowercase;
   text-transform: capitalize;
   left: 3%;
@@ -30,7 +29,7 @@
   position: relative;
   width: 90%;
   height: 85vh;
-  top: 50%;
+  top: -8vh;
   left: 50%;
   transform: translate(-50%, 10%);
   display: flex;
@@ -72,10 +71,10 @@
 }
 
 .next {
-  position: absolute;
+  position: relative;
   background: rgb(90, 90, 205);
   padding: 10px;
-  top: 95%;
+  top: -11vh;
   left: 85%;
   transform: translate(-50%, -120%);
   font-size: 20px;
