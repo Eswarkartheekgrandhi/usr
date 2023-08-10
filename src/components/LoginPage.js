@@ -41,7 +41,7 @@ const LoginPage = ({ onLogin }) => {
             className="input-field"
           />
         </div>
-        <button className="input-field" onClick={handleLoginClick}>
+        <button className="input-field" onClick={handleLoginClick} >
           LOGIN
         </button>
 
