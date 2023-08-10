@@ -49,7 +49,7 @@ export default function App() {
               <div style={{ flex: "15%", textAlign: "center" }}>{item.first_name}</div>
               <div style={{ flex: "15%", textAlign: "center" }}>{item.last_name}</div>
               <div style={{ flex: "15%", textAlign: "center" }}>{item.email}</div>
-              <div style={{ flex: "15%", textAlign: "center" }}>{item.phone}</div>
+              <div style={{ flex: "15%", textAlign: "center", color:"red"}}>{item.phone}</div>
               <div style={{ flex: "15%", textAlign: "center" }}>{item.first_name}</div>
             </div>
           );
