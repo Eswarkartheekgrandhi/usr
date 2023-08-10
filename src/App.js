@@ -5,6 +5,7 @@ import HomePage from "./components/HomePage";
 import SignUpPage from "./components/SignUpPage";
 import USRTablePage from "./components/USRTablePage";
 import StatusPage from "./components/StatusPage";
+import USRaddPage from "./components/USRaddPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,6 +33,7 @@ const App = () => {
         />
         <Route path="/USR" element={<USRTablePage />} />
         <Route path="/status" element={<StatusPage />} />
+        <Route path="/USRadd" element={<USRaddPage />} />
       </Routes>
     </Router>
   );

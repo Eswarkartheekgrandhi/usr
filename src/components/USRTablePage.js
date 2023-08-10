@@ -1,7 +1,6 @@
 import React from "react";
 import "../styles/USRTable.css";
 import TopNavBar from "./topNavBar.js";
-import "../styles/topNavBar.css";
 
 function USRTablePage() {
   return (
