@@ -4,17 +4,31 @@ import data from './mock-data.json';
 import '../styles/pagination.scss';
 import TopNavBar from "./topNavBar.js";
 import "../styles/table.css";
+import { Dialog } from 'primereact/dialog';
+import { Button } from 'primereact/button';
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";  
+import uploadImage from "../images/upload.png";
 
 let PageSize = 10;
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [visible, setVisible] = useState(false);
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     return data.slice(firstPageIndex, lastPageIndex);
   }, [currentPage]);
+
+  const footerContent = (
+    <div>
+        <Button label="No" icon="pi pi-times" onClick={() => setVisible(false)} className="p-button-text" />
+        <Button label="Yes" icon="pi pi-check" autoFocus />
+    </div>
+);
 
   return (
     <>
@@ -24,7 +38,29 @@ export default function App() {
 
       <div className='table-add-tab'>
         <div style={{ flex: "50%" }}>
-          <div className='table-button'>Add USR</div>
+          <div className='table-button' onClick={() => setVisible(true)}>Add USR</div>
+          <Dialog header="File upload" visible={visible} style={{ width: '50vw',height:'60vh' }} onHide={() => setVisible(false)} >
+            <div className='table-popup'>
+              <div className='table-popup-card'>
+                Raw File
+                <div className='table-popup-content-card'>
+                    <img src={uploadImage} alt="upload" style={{width:'6vw',height:'6vw'}}/>
+                    <div style={{fontSize:".8em",fontWeight:"500",marginTop:"1vh"}}>Drag and drop File</div>
+                    <div style={{fontSize:".7em",fontWeight:"450",marginTop:"1vh",color:"grey"}}>Or</div>
+                    <div className='table-popup-button'>Browse this computer</div>
+                </div>
+              </div>
+              <div className='table-popup-card'>
+                USR File
+                <div className='table-popup-content-card'>
+                    <img src={uploadImage} alt="upload" style={{width:'6vw',height:'6vw'}}/>
+                    <div style={{fontSize:".8em",fontWeight:"500",marginTop:"1vh"}}>Drag and drop File</div>
+                    <div style={{fontSize:".7em",fontWeight:"450",marginTop:"1vh",color:"grey"}}>Or</div>
+                    <div className='table-popup-button'>Browse this computer</div>
+                </div>
+              </div>  
+            </div>
+          </Dialog>
         </div>
         <div style={{ flex: "50%" }}>
           <div style={{ display: "flex", justifyContent: "right", alignItems: "center" }}>
