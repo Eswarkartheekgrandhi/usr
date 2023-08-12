@@ -1,19 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/SimplifyPage.css";
+import TopNavBar from "./topNavBar";
+import DeleteMsgPopup from "./DeleteMsgPopup";
 
 function SimplifyPage() {
+  const [showPopup, setShowPopup] = useState(false);
+  const openPopup = () => {
+    setShowPopup(true);
+  };
+  const closePopup = () => {
+    setShowPopup(false);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <div
-          className="logo-container"
-          style={{ position: "absolute", top: "20px", left: "20px" }}
-        >
-          {/* <img src="logo.png" alt="logo-here" className="logo" />
-           */}
-          Logo
-        </div>
-      </header>
+      <TopNavBar />
       <div className="ba">
         <button>Back</button>
       </div>
@@ -35,7 +35,10 @@ function SimplifyPage() {
           </p>
         </div>
       </div>
-      <button className="simplify">Simplify</button>
+      <button className="simplify" onClick={openPopup}>
+        Simplify
+      </button>
+      {showPopup && <DeleteMsgPopup onClose={closePopup} />}
     </div>
   );
 }

@@ -5,6 +5,8 @@ import HomePage from "./components/HomePage";
 import SignUpPage from "./components/SignUpPage";
 import USRTablePage from "./components/USRTablePage";
 import StatusPage from "./components/StatusPage";
+import SimplifyPage from "./components/SimplifyPage";
+import TextToLinesPage from "./components/TextToLinesPage";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,6 +34,8 @@ const App = () => {
         />
         <Route path="/USR" element={<USRTablePage />} />
         <Route path="/status" element={<StatusPage />} />
+        <Route path="/simplify" element={<SimplifyPage />} />
+        <Route path="/text" element={<TextToLinesPage />} />
       </Routes>
     </Router>
   );

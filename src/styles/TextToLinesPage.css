@@ -1,0 +1,115 @@
+.App .ba button {
+  border: none;
+  position: relative;
+  text-transform: lowercase;
+  text-transform: capitalize;
+  left: 3%;
+  width: 8%;
+  background-color: transparent;
+  outline: none;
+}
+
+.top-heading {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.Lines {
+  position: relative;
+  width: 60%;
+  height: 83vh;
+  background: #ecfcff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  border: 4px solid #063d65;
+}
+
+.Lines-1 {
+  display: flex;
+  border-bottom: 2px solid #063d65;
+}
+
+.Lines-1-left {
+  width: 10%;
+}
+
+.Lines-1-right-part1,
+.Lines-1-right-part3 {
+  display: flex;
+}
+
+.Lines-1-right-part1 .Lines-1-right-part1-left,
+.Lines-1-right-part3 .Lines-1-right-part1-left {
+  width: 5%;
+}
+
+.edit-icon {
+  position: absolute;
+  top: 0;
+  right: -13px;
+}
+
+.editable {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #063d65;
+  display: flex;
+  align-items: center;
+}
+
+.editable-content {
+  border: 1px solid #ccc;
+  padding: 8px;
+  background-color: #f9f9f9;
+  cursor: text;
+}
+
+/* .Lines-1-center-hr {
+  position: absolute;
+  width: 90%;
+  height: 2px;
+  background: #cbe6fb;
+  top: 14%;
+  z-index: -1;
+} */
+
+.Lines-1-center img {
+  position: relative;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  width: 20px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.Lines-1-left h4 {
+  background: #063d65;
+  width: 20%;
+  padding: 10px;
+  margin-left: 20px;
+  color: #fff;
+}
+
+.Back-button {
+  margin-left: 5%;
+  text-decoration: none;
+  color: #000000;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.Usr-button button {
+  position: relative;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #063d65;
+  width: 200px;
+  color: #fff;
+  cursor: pointer;
+}
