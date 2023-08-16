@@ -99,3 +99,21 @@
     background-color: #42da4f;
 }
 
+.table-popup-export-option{
+    margin-left: 1.3vw;
+    margin-right: 1.3vw;
+    width:24%;
+    height:6vh;
+    background-color: #063D65;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: .8em;
+    border-radius: .4vw;
+    cursor: pointer;
+}
+.table-popup-export-option:hover{
+    background-color: #42da4f;
+}
+
