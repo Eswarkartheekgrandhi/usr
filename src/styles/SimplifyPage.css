@@ -1,21 +1,14 @@
-.back-button {
-  position: relative;
-  top: 30px;
-  left: 20px;
-  width: 100px;
-  /* margin-top: 20px; */
-}
-
 .App .ba button {
   border: none;
   position: relative;
-  top: 50px;
+  top: 10px;
   text-transform: lowercase;
   text-transform: capitalize;
   left: 3%;
   width: 8%;
   background-color: transparent;
   outline: none;
+  color: #2f2f2f;
 }
 
 .logo-container {
@@ -27,7 +20,7 @@
 }
 
 .content {
-  margin-top: 100px;
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,7 +46,7 @@
   background: #1e4c6e;
   color: white;
   padding: 10px;
-  top: 67%;
+  top: 75%;
   left: 50%;
   /* transform: translate(-50%, -50%); */
   font-size: 20px;
@@ -61,4 +54,5 @@
   width: 200px;
   text-transform: lowercase;
   text-transform: capitalize;
+  border-radius: 8px;
 }
