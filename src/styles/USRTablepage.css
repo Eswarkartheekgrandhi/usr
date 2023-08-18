@@ -1,0 +1,43 @@
+.ba button {
+  border: none;
+  position: relative;
+  text-transform: lowercase;
+  text-transform: capitalize;
+  left: 3%;
+  width: 8%;
+  background-color: transparent;
+  outline: none;
+}
+
+.sentence {
+  color: #2f2f2f;
+}
+
+.box-top {
+  position: relative;
+  left: 40px;
+}
+
+.contain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 0 0;
+  padding: 10px;
+  border: 1px solid blue;
+  background-color: #f9f9f9;
+}
+
+.box-top .content a {
+  text-decoration: none;
+}
+
+.arrow {
+  margin-left: 15px;
+}
