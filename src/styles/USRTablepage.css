@@ -18,6 +18,11 @@
   left: 40px;
 }
 
+.box-middle {
+  position: relative;
+  left: 40px;
+}
+
 .contain {
   display: flex;
   flex-wrap: wrap;
