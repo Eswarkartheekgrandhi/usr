@@ -27,18 +27,17 @@ function USRTable() {
   ]);
 
   return (
-    <div>
-      <TopNavBar />
+    <div >
       <div className="ba">
         <button>Back</button>
       </div>
-      <div className="box"></div>
+      {/* <div className="box"></div> */}
       <div className="box-top">
         <h3 className="sentence">Sentences</h3>
         <div className="contain">
           {sentences.map((sentence, index) => (
             <div className="content" key={index}>
-              <a href="#">{sentence}</a>
+              <a href="#" style={{color:"black"}}>{sentence}</a>
               <span className="arrow">
                 <KeyboardArrowRightIcon />
               </span>
