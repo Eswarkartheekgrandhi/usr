@@ -5,11 +5,16 @@ import '../styles/pagination.scss';
 import TopNavBar from "./topNavBar.js";
 import "../styles/table.css";
 import { Dialog } from 'primereact/dialog';
-import { Button } from 'primereact/button';
+// import { Button } from 'primereact/button';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import uploadImage from "../images/upload.png";
+import Modal from 'react-modal';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import icon from "../images/Group.png";
 
 let PageSize = 10;
 
@@ -17,12 +22,32 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [visible, setVisible] = useState(false);
   const [exportVisible, setExportVisible] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     return data.slice(firstPageIndex, lastPageIndex);
   }, [currentPage]);
+
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const footerContent = (
     <div>
@@ -74,13 +99,13 @@ export default function App() {
           <div style={{ display: "flex", justifyContent: "right", alignItems: "center" }}>
             <div className='table-button' onClick={() => setExportVisible(true)}>Export</div>
             <Dialog header="File upload" visible={exportVisible} style={{ width: '50vw', height: '35vh' }} onHide={() => setExportVisible(false)} >
-              <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-                <div style={{color:"#242424"}}>Please select correct option</div>
-                <div style={{color:"#242424"}}>HDFJVI937898547BFEJBFEKKHK8</div>
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <div style={{ color: "#242424" }}>Please select correct option</div>
+                <div style={{ color: "#242424" }}>HDFJVI937898547BFEJBFEKKHK8</div>
               </div>
-              <br/>
+              <br />
 
-              <div style={{display:"flex",flexDirection:"row",alignItem:"center",justifyContent:"center"}}>
+              <div style={{ display: "flex", flexDirection: "row", alignItem: "center", justifyContent: "center" }}>
                 <div className='table-popup-export-option'>CSV</div>
                 <div className='table-popup-export-option'>select language</div>
               </div>
@@ -106,7 +131,30 @@ export default function App() {
               <div style={{ flex: "15%", textAlign: "center" }}>{item.last_name}</div>
               <div style={{ flex: "15%", textAlign: "center" }}>{item.email}</div>
               <div style={{ flex: "15%", textAlign: "center", color: "red" }}>{item.phone}</div>
-              <div style={{ flex: "15%", textAlign: "center" }}>{item.first_name}</div>
+              <div style={{flex:"15%",boxShadow:"none",display:"flex",flexDirection:"column", alignItems:"center",justifyContent:"center"}}>
+                <img aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                  src={icon} 
+                  style={{maxWidth:"2.5%",height:"auto"}}
+                />
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  <MenuItem onClick={handleClose}>Modify</MenuItem>
+                  <MenuItem onClick={handleClose}>View</MenuItem>
+                  <MenuItem onClick={handleClose}>Add</MenuItem>
+                </Menu>
+              </div>
+              {/* <div style={{ flex: "15%", textAlign: "center" }}>{item.first_name}</div> */}
+
             </div>
           );
         })}

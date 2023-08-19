@@ -7,7 +7,7 @@ import StatusPage from "./components/StatusPage";
 import USRaddPage from "./components/USRaddPage";
 import SimplifyPage from "./components/SimplifyPage";
 import TextToLinesPage from "./components/TextToLinesPage";
-import USRTable from "./components/USRTable";
+import NewUSRTable from "./components/USRtablenew";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,7 +37,7 @@ const App = () => {
         <Route path="/USRadd" element={<USRaddPage />} />
         <Route path="/simplify" element={<SimplifyPage />} />
         <Route path="/text" element={<TextToLinesPage />} />
-        <Route path="/usrTable" element={<USRTable />} />
+        <Route path="/newUSR" element={<NewUSRTable />} />
       </Routes>
     </Router>
   );
