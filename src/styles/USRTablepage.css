@@ -1,3 +1,7 @@
+.top {
+  overflow-x: hidden;
+}
+
 .ba button {
   border: none;
   position: relative;
@@ -15,6 +19,8 @@
 
 .box-top {
   position: relative;
+  width: 100%;
+  overflow-x: hidden;
   left: 40px;
 }
 
@@ -27,6 +33,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  margin-right: 2vw;
 }
 
 .content {

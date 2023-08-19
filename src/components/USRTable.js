@@ -27,12 +27,11 @@ function USRTable() {
   ]);
 
   return (
-    <div>
+    <div className="top">
       <TopNavBar />
       <div className="ba">
         <button>Back</button>
       </div>
-      <div className="box"></div>
       <div className="box-top">
         <h3 className="sentence">Sentences</h3>
         <div className="contain">
@@ -48,7 +47,7 @@ function USRTable() {
       </div>
       <div className="box-middle">
         <h3 className="Discourse">Discourse</h3>
-        <p>
+        <p className="Discourse-data">
           Lorem ipsum dolor sit amet consectetur. Scelerisque gravida bibendum
           in sed diam quis nullam. Tempor elementum morbi viverra lectus integer
           non id. Nulla turpis sit a adipiscing sit feugiat neque. Quam tellus a
