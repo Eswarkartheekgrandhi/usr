@@ -27,19 +27,11 @@ function USRTable() {
   ]);
 
   return (
-<<<<<<< HEAD
-    <div className="top">
-      <TopNavBar />
-      <div className="ba">
-        <button>Back</button>
-      </div>
-=======
     <div >
       <div className="ba">
         <button>Back</button>
       </div>
       {/* <div className="box"></div> */}
->>>>>>> def880e1f1cb6fc4bd85901ddf21e0dfbbda6494
       <div className="box-top">
         <h3 className="sentence">Sentences</h3>
         <div className="contain">

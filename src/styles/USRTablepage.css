@@ -33,11 +33,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-<<<<<<< HEAD
-  margin-right: 2vw;
-=======
   color: black;
->>>>>>> def880e1f1cb6fc4bd85901ddf21e0dfbbda6494
 }
 
 .content {
