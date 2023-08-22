@@ -81,6 +81,23 @@ export default function App() {
     </div>
   );
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
+
+  const handleFileDrop = (event) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    setSelectedFile(file);
+  };
+
+  const preventDefault = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <TopNavBar />
@@ -100,7 +117,11 @@ export default function App() {
             draggable={false}
           >
             <div className="table-popup">
-              <div className="table-popup-card">
+              <div
+                className="table-popup-card"
+                onDrop={handleFileDrop}
+                onDragOver={preventDefault}
+              >
                 Raw File
                 <div className="table-popup-content-card">
                   <img
@@ -115,7 +136,7 @@ export default function App() {
                       marginTop: "1vh",
                     }}
                   >
-                    Drag and drop File
+                    {selectedFile ? selectedFile.name : "Drag and drop File"}
                   </div>
                   <div
                     style={{
@@ -127,10 +148,24 @@ export default function App() {
                   >
                     Or
                   </div>
-                  <div className="table-popup-button">Browse this computer</div>
+                  <label htmlFor="fileInput" className="table-popup-button">
+                    Browse this computer
+                  </label>
+
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    style={{ display: "none" }}
+                    onChange={handleFileInputChange}
+                  />
                 </div>
               </div>
-              <div className="table-popup-card">
+              <div
+                className="table-popup-card"
+                onDrop={handleFileDrop}
+                onDragOver={preventDefault}
+              >
                 USR File
                 <div className="table-popup-content-card">
                   <img
@@ -145,7 +180,7 @@ export default function App() {
                       marginTop: "1vh",
                     }}
                   >
-                    Drag and drop File
+                    {selectedFile ? selectedFile.name : "Drag and drop File"}
                   </div>
                   <div
                     style={{
@@ -157,7 +192,16 @@ export default function App() {
                   >
                     Or
                   </div>
-                  <div className="table-popup-button">Browse this computer</div>
+                  <label htmlFor="usrFileInput" className="table-popup-button">
+                    Browse this computer
+                  </label>
+                  <input
+                    type="file"
+                    id="usrFileInput"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    style={{ display: "none" }}
+                    onChange={handleFileInputChange}
+                  />
                 </div>
               </div>
             </div>
