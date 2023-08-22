@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import SignUpPage from "./components/SignUpPage";
-import StatusPage from "./components/StatusPage";
 import USRaddPage from "./components/USRaddPage";
 import SimplifyPage from "./components/SimplifyPage";
 import TextToLinesPage from "./components/TextToLinesPage";
@@ -33,7 +32,6 @@ const App = () => {
           path="/signup"
           element={<SignUpPage onSignUp={handleSignUp} />}
         />
-        <Route path="/status" element={<StatusPage />} />
         <Route path="/USRadd" element={<USRaddPage />} />
         <Route path="/simplify" element={<SimplifyPage />} />
         <Route path="/text" element={<TextToLinesPage />} />

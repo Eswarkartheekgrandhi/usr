@@ -9,6 +9,7 @@ function DeleteMsgPopup({ onClose }) {
       </span>
       <div className="box">
         <p className="head">Are you sure you want to delete this file?</p>
+
         <div className="buttons">
           <button
             className="cancel"
