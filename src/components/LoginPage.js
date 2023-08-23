@@ -5,15 +5,47 @@ import "../styles/LoginPage.css";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import HttpsOutlinedIcon from "@mui/icons-material/HttpsOutlined";
 import logo from "../images/Group899.png";
+import { BASE_URL } from './config.js';
+
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLoginClick = () => {
-    onLogin(email, password);
-    navigate("/home");
+  const handleLoginClick = async () => {
+    try {
+      const response = await fetch(BASE_URL + '/user/validate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store the token in localStorage
+        localStorage.setItem('token', data.token);
+        console.log(data.token);
+
+        // Call the onLogin function if needed
+        onLogin();
+
+        // Navigate to the home page
+        navigate("/home");
+      } else {
+        console.error("Login failed:", data.message);
+        // Handle login error here
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      // Handle error here
+    }
   };
 
   return (
