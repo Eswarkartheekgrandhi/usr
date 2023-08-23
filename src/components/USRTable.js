@@ -27,28 +27,14 @@ function USRTable() {
   ]);
 
   return (
-    <div>
-      <TopNavBar />
+    <div className="top">
       <div className="ba">
         <button>Back</button>
       </div>
-      <div className="box"></div>
-      <div className="box-top">
-        <h3 className="sentence">Sentences</h3>
-        <div className="contain">
-          {sentences.map((sentence, index) => (
-            <div className="content" key={index}>
-              <a href="#">{sentence}</a>
-              <span className="arrow">
-                <KeyboardArrowRightIcon />
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* <div className="box"></div> */}
       <div className="box-middle">
         <h3 className="Discourse">Discourse</h3>
-        <p>
+        <p className="Discourse-data">
           Lorem ipsum dolor sit amet consectetur. Scelerisque gravida bibendum
           in sed diam quis nullam. Tempor elementum morbi viverra lectus integer
           non id. Nulla turpis sit a adipiscing sit feugiat neque. Quam tellus a
@@ -57,6 +43,21 @@ function USRTable() {
           in auctor. Duis ullamcorper tempor phasellus turpis euismod accumsan
           tincidunt tortor eleifend. Hendrerit pulvinar purus sed nunc duis.
         </p>
+      </div>
+      <div className="box-top">
+        <h3 className="sentence">Sentences</h3>
+        <div className="contain">
+          {sentences.map((sentence, index) => (
+            <div className="content" key={index}>
+              <a href="#" style={{ color: "black" }}>
+                {sentence}
+              </a>
+              <span className="arrow">
+                <KeyboardArrowRightIcon />
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

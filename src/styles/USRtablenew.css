@@ -1,34 +1,34 @@
-.USRnew-table-box{
-    background: #E8F7FA;
-    margin-left:3vw;
-    width:94%;
-    height: auto;
-    padding:.5vw
+.USRnew-table-box {
+  background: #e8f7fa;
+  margin-left: 1vw;
+  /* width: 100%; */
+  height: auto;
+  padding: 0.5vw;
 }
 
-.USRnew-top-box{
-    background-color: #1873BB;
-    flex:12.5%;
-    height: 5vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: .5px solid white;
-    color: white;
-    font-size: 1vw;
-    font-weight: 300;
-    display: flex;
-    flex-direction: row;
-    
+.USRnew-top-box {
+  background-color: #1873bb;
+  flex: 1;
+  height: 5vh;
+  justify-content: center;
+  align-items: center;
+  border: 0.5px solid white;
+  color: white;
+  font-size: 1vw;
+  font-weight: 300;
+  display: flex;
+  flex-direction: row;
 }
-.USRnew-top-box-edit{
-    background-color: white;
-    flex:12.5%;
-    height: 5vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: .5px solid #1873BB;
-    font-size: 1vw;
-    font-weight: 300;
+
+.USRnew-top-box-edit {
+  background-color: white;
+  flex: 1;
+  height: 5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #1873bb;
+  font-size: 1vw;
+  font-weight: 300;
+  width: 50%;
 }
