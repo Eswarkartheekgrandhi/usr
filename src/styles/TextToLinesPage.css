@@ -15,10 +15,11 @@
   display: flex;
 }
 
+
 .Lines {
   position: relative;
   width: 60%;
-  height: 83vh;
+  height: 80vh;
   background: #ecfcff;
   top: 50%;
   left: 50%;
@@ -26,9 +27,13 @@
   border: 4px solid #063d65;
 }
 
+.sentence-column {
+  padding: 0% 0; /* Adjust the values as needed */
+}
+
 .Lines-1 {
   display: flex;
-  border-bottom: 2px solid #063d65;
+  border-bottom: 2px solid #cbd0d4;
 }
 
 .Lines-1-left {
@@ -51,18 +56,29 @@
   right: -13px;
 }
 
+.table-row .button-cell {
+  text-align: right;
+}
+
+
 .editable {
   background: none;
   border: none;
   cursor: pointer;
   color: #063d65;
   display: flex;
-  align-items: center;
+  padding: 0;
+  height: 20px;
+  /* align-items: center; */
+  /* margin-left: 780px; */
+  /* margin-top: 50px; */
 }
+
+
 
 .editable-content {
   border: 1px solid #ccc;
-  padding: 8px;
+  padding: 3px;
   background-color: #f9f9f9;
   cursor: text;
 }
@@ -75,6 +91,8 @@
   top: 14%;
   z-index: -1;
 } */
+
+
 
 .Lines-1-center img {
   position: relative;
@@ -89,9 +107,9 @@
 .Lines-1-left h4 {
   background: #063d65;
   width: 20%;
-  padding: 10px;
+  padding: 0px;
   margin-left: 20px;
-  color: #fff;
+  color: #ffffff;
 }
 
 .Back-button {
