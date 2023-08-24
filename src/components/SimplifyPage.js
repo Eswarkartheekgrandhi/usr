@@ -17,7 +17,7 @@ function SimplifyPage() {
       <div className="ba">
         <button>Back</button>
       </div>
-      <div className="content">
+      <div className="simplify-content">
         <h4 className="header">Click on simplify to separate it to lines</h4>
         <div className="data">
           <p>
