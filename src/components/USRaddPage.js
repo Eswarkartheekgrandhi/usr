@@ -20,6 +20,8 @@ export default function App() {
   const [visible, setVisible] = useState(false);
   const [exportVisible, setExportVisible] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [rawFile, setRawFile] = useState(null);
+  const [usrFile, setUsrFile] = useState(null);
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
@@ -27,52 +29,27 @@ export default function App() {
     return data.slice(firstPageIndex, lastPageIndex);
   }, [currentPage]);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleFileInputChange = (event, fileType) => {
+    const file = event.target.files[0];
+    if (fileType === "rawfile") {
+      setRawFile(file);
+    } else if (fileType === "usrfile") {
+      setUsrFile(file);
+    }
   };
 
-  const handleRawFileUpload = async () => {
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
-      const fileContent = await selectedFile.text();
-      const body = {
-        fileContent: fileContent,
-        discourseName: "Ram",
-        uploadedBy: "Ram",
-      };
-
-      try {
-        const token = localStorage.getItem("token"); // Get token from localStorage
-        if (!token) {
-          console.error("Token not found in localStorage");
-          return;
-        }
-
-        const response = await fetch(BASE_URL + "/upload/rawFile", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": token, // Use the retrieved token from localStorage
-          },
-          body: JSON.stringify(body),
-        });
-
-        if (response.ok) {
-          console.log("File uploaded successfully");
-          // Handle success
-        } else {
-          console.error("File upload failed");
-          // Handle error
-        }
-      } catch (error) {
-        console.error("An error occurred:", error);
-        // Handle error
-      }
-    } else {
-      console.log("No file selected.");
+  const handleFileDrop = (event, fileType) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (fileType === "rawfile") {
+      setRawFile(file);
+    } else if (fileType === "usrfile") {
+      setUsrFile(file);
     }
+  };
+
+  const preventDefault = (event) => {
+    event.preventDefault();
   };
 
   const [showPopup, setShowPopup] = useState(false);
@@ -102,9 +79,14 @@ export default function App() {
             draggable={false}
           >
             <div className="table-popup">
-              <div className="table-popup-card">
+              <div
+                className="table-popup-card"
+                onDrop={(event) => handleFileDrop(event, "rawfile")}
+                onDragOver={preventDefault}
+              >
                 Raw File
                 <div className="table-popup-content-card">
+                  {/* Display the selected raw file */}
                   <img
                     src={uploadImage}
                     alt="upload"
@@ -117,7 +99,7 @@ export default function App() {
                       marginTop: "1vh",
                     }}
                   >
-                    Drag and drop File
+                    {rawFile ? rawFile.name : "Drag and drop File"}
                   </div>
                   <div
                     style={{
@@ -129,23 +111,28 @@ export default function App() {
                   >
                     Or
                   </div>
+                  <label htmlFor="rawFileInput" className="table-popup-button">
+                    Browse this computer
+                  </label>
                   <input
                     type="file"
-                    onChange={handleFileChange}
-                    className="input-field"
-                    accept=".txt"
+                    id="rawFileInput"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    style={{ display: "none" }}
+                    onChange={(event) =>
+                      handleFileInputChange(event, "rawfile")
+                    }
                   />
-                  <button
-                    className="table-popup-button"
-                    onClick={handleRawFileUpload}
-                  >
-                    Raw File Upload
-                  </button>
                 </div>
               </div>
-              <div className="table-popup-card">
+              <div
+                className="table-popup-card"
+                onDrop={(event) => handleFileDrop(event, "usrfile")}
+                onDragOver={preventDefault}
+              >
                 USR File
                 <div className="table-popup-content-card">
+                  {/* Display the selected usr file */}
                   <img
                     src={uploadImage}
                     alt="upload"
@@ -158,7 +145,7 @@ export default function App() {
                       marginTop: "1vh",
                     }}
                   >
-                    Drag and drop File
+                    {usrFile ? usrFile.name : "Drag and drop File"}
                   </div>
                   <div
                     style={{
@@ -170,7 +157,18 @@ export default function App() {
                   >
                     Or
                   </div>
-                  <div className="table-popup-button">Browse this computer</div>
+                  <label htmlFor="usrFileInput" className="table-popup-button">
+                    Browse this computer
+                  </label>
+                  <input
+                    type="file"
+                    id="usrFileInput"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    style={{ display: "none" }}
+                    onChange={(event) =>
+                      handleFileInputChange(event, "usrfile")
+                    }
+                  />
                 </div>
               </div>
             </div>
