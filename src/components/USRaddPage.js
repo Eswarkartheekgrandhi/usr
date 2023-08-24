@@ -48,6 +48,50 @@ export default function App() {
     }
   };
 
+  const handleRawFileUpload = async () => {
+    if (rawFile) {
+      const formData = new FormData();
+      formData.append("file", rawFile);
+
+      const fileContent = await rawFile.text();
+      const body = {
+        fileContent: fileContent,
+        discourseName: "Ram",
+        uploadedBy: "Ram",
+      };
+
+      try {
+        const token = localStorage.getItem("token"); // Get token from localStorage
+        if (!token) {
+          console.error("Token not found in localStorage");
+          return;
+        }
+
+        const response = await fetch(BASE_URL + "/upload/rawFile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token, // Use the retrieved token from localStorage
+          },
+          body: JSON.stringify(body),
+        });
+
+        if (response.ok) {
+          console.log("File uploaded successfully");
+          // Handle success
+        } else {
+          console.error("File upload failed");
+          // Handle error
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        // Handle error
+      }
+    } else {
+      console.log("No file selected.");
+    }
+  };
+
   const preventDefault = (event) => {
     event.preventDefault();
   };
@@ -114,6 +158,12 @@ export default function App() {
                   <label htmlFor="rawFileInput" className="table-popup-button">
                     Browse this computer
                   </label>
+                  <button
+                    className="table-popup-button1"
+                    onClick={handleRawFileUpload}
+                  >
+                    Raw File Upload
+                  </button>
                   <input
                     type="file"
                     id="rawFileInput"
@@ -123,6 +173,7 @@ export default function App() {
                       handleFileInputChange(event, "rawfile")
                     }
                   />
+                  {/* <button className="abc">upload</button> */}
                 </div>
               </div>
               <div
@@ -158,12 +209,18 @@ export default function App() {
                     Or
                   </div>
                   <label htmlFor="usrFileInput" className="table-popup-button">
-                    Browse this computer
+                    Browse the computer
                   </label>
+                  <button
+                    className="table-popup-button1"
+                    onClick={handleRawFileUpload}
+                  >
+                    USR File Upload
+                  </button>
                   <input
                     type="file"
                     id="usrFileInput"
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".txt"
                     style={{ display: "none" }}
                     onChange={(event) =>
                       handleFileInputChange(event, "usrfile")
