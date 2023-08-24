@@ -19,7 +19,7 @@
 
 .box-top {
   position: relative;
-  width: 100%;
+  width: 95%;
   overflow-x: hidden;
   left: 40px;
 }
@@ -27,6 +27,7 @@
 .box-middle {
   position: relative;
   left: 40px;
+  width: 95%;
 }
 
 .contain {
