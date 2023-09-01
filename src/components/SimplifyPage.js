@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import "../styles/SimplifyPage.css";
 import TopNavBar from "./topNavBar";
-import DeleteMsgPopup from "./DeleteMsgPopup";
 
 function SimplifyPage() {
-  const [showPopup, setShowPopup] = useState(false);
-  const openPopup = () => {
-    setShowPopup(true);
-  };
-  const closePopup = () => {
-    setShowPopup(false);
-  };
   return (
     <div className="App">
       <TopNavBar />
@@ -35,10 +27,7 @@ function SimplifyPage() {
           </p>
         </div>
       </div>
-      <button className="simplify" onClick={openPopup}>
-        Simplify
-      </button>
-      {showPopup && <DeleteMsgPopup onClose={closePopup} />}
+      <button className="simplify">Simplify</button>
     </div>
   );
 }

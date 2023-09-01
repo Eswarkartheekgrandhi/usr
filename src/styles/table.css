@@ -52,7 +52,7 @@
 .table-popup-card {
   margin-left: 1.5vw;
   margin-right: 1.5vw;
-  margin-bottom: 0;
+  /* margin-bottom: 1.5vw; */
   color: #063d65;
   font-weight: 500;
   height: 100%;

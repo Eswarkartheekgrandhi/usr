@@ -6,7 +6,8 @@ import "../styles/TextToLinesPage.css";
 import AddIcon from "@mui/icons-material/Add";
 // import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete"; // Import the Delete icon
-import { BASE_URL } from './config.js';
+import { BASE_URL } from "./config.js";
+import { colors } from "@mui/material";
 
 function TextToLinesPage() {
   const [editableGroups, setEditableGroups] = useState({});
@@ -15,23 +16,27 @@ function TextToLinesPage() {
   useEffect(() => {
     async function fetchSimplifiedSentences() {
       try {
-        const token = localStorage.getItem('token'); // Get token from localStorage
+        const token = localStorage.getItem("token"); // Get token from localStorage
         if (!token) {
-          console.error('Token not found in localStorage');
+          console.error("Token not found in localStorage");
           return;
         }
 
-        const response = await fetch(BASE_URL + '/sentenceSimplifier/getSimplifiedSentences', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': token, // Use the retrieved token from localStorage
-          },
-          body: JSON.stringify({ uploadID: "10007" })
-        });
+        const response = await fetch(
+          BASE_URL + "/sentenceSimplifier/getSimplifiedSentences",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": token, // Use the retrieved token from localStorage
+            },
+            body: JSON.stringify({ uploadID: "10016" }),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           // Group sentences based on the first character of sentenceID
           const groupedSentences = data.data.reduce((groups, sentence) => {
             const firstChar = sentence.sentenceID.charAt(0);
@@ -43,13 +48,12 @@ function TextToLinesPage() {
           }, {});
           setResponseSentences(groupedSentences);
         } else {
-          console.error('Failed to fetch simplified sentences');
+          console.error("Failed to fetch simplified sentences");
         }
       } catch (error) {
-        console.error('An error occurred:', error);
+        console.error("An error occurred:", error);
       }
     }
-
 
     fetchSimplifiedSentences();
   }, []);
@@ -60,34 +64,36 @@ function TextToLinesPage() {
       [groupKey]: !prevEditableGroups[groupKey],
     }));
   };
-  
+
   const handleAddSentence = (groupKey, sentenceIndex) => {
     const groupSentences = responseSentences[groupKey];
     const newSentence = { sentenceID: "", sentence: "", editable: true };
-  
+
     const updatedSentences = [...groupSentences];
     updatedSentences.splice(sentenceIndex + 1, 0, newSentence);
     updateSentenceIDs(groupKey, updatedSentences);
   };
-  
+
   const handleDeleteSentence = (groupKey, sentenceIndex) => {
     const groupSentences = responseSentences[groupKey];
-    const updatedSentences = groupSentences.filter((_, index) => index !== sentenceIndex);
+    const updatedSentences = groupSentences.filter(
+      (_, index) => index !== sentenceIndex
+    );
     updateSentenceIDs(groupKey, updatedSentences);
   };
-  
+
   const updateSentenceIDs = (groupKey, sentences) => {
     const updatedSentences = sentences.map((sentence, index) => ({
       ...sentence,
       sentenceID: generateSentenceID(groupKey, index),
     }));
-  
+
     setResponseSentences((prevResponseSentences) => ({
       ...prevResponseSentences,
       [groupKey]: updatedSentences,
     }));
   };
-  
+
   const generateSentenceID = (groupKey, index) => {
     const alphabet = "abcdefghijklmnopqrstuvwxyz";
     const idPart = alphabet[index % alphabet.length];
@@ -95,12 +101,17 @@ function TextToLinesPage() {
   };
 
   const handleSaveChanges = () => {
-    console.log('Edited Sentences:', responseSentences);
+    console.log("Edited Sentences:", responseSentences);
     // Save the updated sentences to the server
   };
 
   return (
     <div className="App">
+      <TopNavBar />
+      <div className="ba">
+        <button>Back</button>
+      </div>
+      <h4 style={{ textAlign: "center" }}>Text converted to lines</h4>
       <div className="Lines">
         {Object.keys(responseSentences).map((groupKey) => {
           const groupSentences = responseSentences[groupKey];
@@ -108,21 +119,89 @@ function TextToLinesPage() {
 
           return (
             <div key={groupKey} className="group-container">
-              <hr style={{ backgroundColor: '#063d65', height: '2px', border: 'none' }} />
+              <hr
+                style={{
+                  backgroundColor: "#063d65",
+                  height: "2px",
+                  border: "none",
+                }}
+              />
               <table className="tabletext">
+                {/* Parent Sentence */}
+                <tr className="table-row ">
+                  <td className="sentence-column ">
+                    <div
+                      className="sentence-info"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "20px",
+                      }}
+                    >
+                      <span className="sentence-text">
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <p
+                            className="parent-sentence"
+                            dangerouslySetInnerHTML={{
+                              __html: groupSentences[0].parentSentence,
+                            }}
+                          />
+                        </div>
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+
                 {groupSentences.map((sentence, sentenceIndex) => (
                   <React.Fragment key={sentence.sentenceID}>
                     <tr className="table-row">
                       <td className="sentence-column">
-                        <div className="sentence-info" style={{ display: 'flex', alignItems: 'center', height: '20px' }}>
-                          <span className="sentence-id" style={{ width: '100px' }}>{sentence.sentenceID}</span>
+                        <div
+                          className="sentence-info"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            height: "20px",
+                          }}
+                        >
+                          <span
+                            className="sentence-id"
+                            style={{
+                              width: "25px",
+                              border: "1px solid blue",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              backgroundColor: "#063D65",
+                              color: "#FFFFFF",
+                              marginLeft: "5px",
+                              marginRight: "10px",
+                            }}
+                          >
+                            {sentence.sentenceID}
+                          </span>
                           <span className="sentence-text">
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
                               {groupEditable && (
                                 <span
                                   className="icon"
-                                  style={{ marginRight: '5px', cursor: 'pointer' }}
-                                  onClick={() => handleDeleteSentence(groupKey, sentenceIndex)}
+                                  style={{
+                                    marginRight: "5px",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() =>
+                                    handleDeleteSentence(
+                                      groupKey,
+                                      sentenceIndex
+                                    )
+                                  }
                                 >
                                   <DeleteIcon />
                                 </span>
@@ -130,8 +209,13 @@ function TextToLinesPage() {
                               {groupEditable && (
                                 <span
                                   className="icon"
-                                  style={{ marginRight: '5px', cursor: 'pointer' }}
-                                  onClick={() => handleAddSentence(groupKey, sentenceIndex)}
+                                  style={{
+                                    marginRight: "5px",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() =>
+                                    handleAddSentence(groupKey, sentenceIndex)
+                                  }
                                 >
                                   <AddIcon />
                                 </span>
@@ -143,49 +227,101 @@ function TextToLinesPage() {
                                   value={sentence.sentence}
                                   onChange={(event) => {
                                     const newValue = event.target.value;
-                                    setResponseSentences((prevResponseSentences) => ({
-                                      ...prevResponseSentences,
-                                      [groupKey]: prevResponseSentences[groupKey].map((s, idx) => {
-                                        if (idx === sentenceIndex) {
-                                          return {
-                                            ...s,
-                                            sentence: newValue,
-                                          };
-                                        }
-                                        return s;
-                                      }),
-                                    }));
+                                    setResponseSentences(
+                                      (prevResponseSentences) => ({
+                                        ...prevResponseSentences,
+                                        [groupKey]: prevResponseSentences[
+                                          groupKey
+                                        ].map((s, idx) => {
+                                          if (idx === sentenceIndex) {
+                                            return {
+                                              ...s,
+                                              sentence: newValue,
+                                            };
+                                          }
+                                          return s;
+                                        }),
+                                      })
+                                    );
                                   }}
                                 />
                               ) : (
-                                <p dangerouslySetInnerHTML={{ __html: sentence.sentence }} />
+                                <p
+                                  dangerouslySetInnerHTML={{
+                                    __html: sentence.sentence,
+                                  }}
+                                />
                               )}
                             </div>
                           </span>
                         </div>
                       </td>
-                      {sentenceIndex === 0 && (
-                        <td className="button-cell align-right" rowSpan={groupSentences.length}>
-                          {groupEditable ? (
-                            <button
-                              onClick={() => toggleEditMode(groupKey)}
-                              className={`editable ${groupEditable ? 'active' : ''}`}
-                            >
-                              Save
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => toggleEditMode(groupKey)}
-                              className={`editable ${groupEditable ? 'active' : ''}`}
-                            >
-                              Edit
-                            </button>
-                          )}
+                      {/* {sentenceIndex === 0 && (
+                        <td
+                          className="button-cell align-right"
+                          rowSpan={groupSentences.length}
+                        >
+                          <div style={{ position: "relative" }}>
+                            {groupEditable ? (
+                              <button
+                                onClick={() => toggleEditMode(groupKey)}
+                                className={`editable ${
+                                  groupEditable ? "active" : ""
+                                }`}
+                                style={{
+                                  position: "absolute",
+                                  top: 0,
+                                  right: 0,
+                                }}
+                              >
+                                Save
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => toggleEditMode(groupKey)}
+                                className={`editable ${
+                                  groupEditable ? "active" : ""
+                                }`}
+                                style={{
+                                  position: "absolute",
+                                  top: 0,
+                                  right: 0,
+                                }}
+                              >
+                                Edit
+                              </button>
+                            )}
+                          </div>
                         </td>
-                      )}
+                      )} */}
                     </tr>
                   </React.Fragment>
                 ))}
+                <tr className="table-row">
+                  <td className="button-cell align-right">
+                    <div className="button-container">
+                      {groupEditable ? (
+                        <button
+                          onClick={() => toggleEditMode(groupKey)}
+                          className={`editable ${
+                            groupEditable ? "active" : ""
+                          }`}
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => toggleEditMode(groupKey)}
+                          className={`editable ${
+                            groupEditable ? "active" : ""
+                          }`}
+                        >
+                          Edit
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
               </table>
             </div>
           );

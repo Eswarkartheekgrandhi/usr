@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Pagination from "./PageDiv.js";
 import data from "./mock-data.json";
 import "../styles/pagination.scss";
@@ -12,6 +12,10 @@ import "primeicons/primeicons.css";
 import uploadImage from "../images/upload.png";
 import { BASE_URL } from "./config.js";
 import DeleteMsgPopup from "./DeleteMsgPopup.js";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
 
 let PageSize = 10;
 
@@ -22,12 +26,63 @@ export default function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [rawFile, setRawFile] = useState(null);
   const [usrFile, setUsrFile] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [tableData, setTableData] = useState([]); // Store data fetched from the API
+
+  useEffect(() => {
+    // Fetch data from the API when the component mounts
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("Token not found in localStorage");
+        return;
+      } else {
+        console.log("token found");
+      }
+
+      const response = await fetch(BASE_URL + "/discourse/getData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTableData(data);
+        console.log("Data is fetched successfully");
+        console.log(data);
+      } else {
+        console.error(
+          "Failed to fetch data. Response status:",
+          response.status
+        );
+        const errorMessage = await response.text();
+        console.error("Error message:", errorMessage);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
-    return data.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+    return tableData.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, tableData]);
 
   const handleFileInputChange = (event, fileType) => {
     const file = event.target.files[0];
@@ -104,6 +159,10 @@ export default function App() {
     setShowPopup(false);
   };
 
+  const handleManageUSR = () => {
+    window.location.href = "/newUSR";
+  };
+
   return (
     <>
       <TopNavBar />
@@ -167,7 +226,7 @@ export default function App() {
                   <input
                     type="file"
                     id="rawFileInput"
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".txt"
                     style={{ display: "none" }}
                     onChange={(event) =>
                       handleFileInputChange(event, "rawfile")
@@ -243,7 +302,7 @@ export default function App() {
               className="table-button"
               onClick={() => setExportVisible(true)}
             >
-              Export
+              Export USR
             </div>
             <Dialog
               header="File upload"
@@ -316,37 +375,64 @@ export default function App() {
           className="table-head"
           style={{ color: "#A6A6A6", backgroundColor: "#d6e6f2" }}
         >
-          <div style={{ flex: "25%", textAlign: "left", paddingLeft: "1vw" }}>
+          <div style={{ flex: "30%", textAlign: "center" }}>Date & Time</div>
+          <div style={{ flex: "15%", textAlign: "center" }}>Uploaded By</div>
+          <div style={{ flex: "15%", textAlign: "center", paddingLeft: "1vw" }}>
             Discourse Name
           </div>
           <div style={{ flex: "15%", textAlign: "center" }}>Total USR</div>
-          <div style={{ flex: "15%", textAlign: "center" }}>Total Validate</div>
-          <div style={{ flex: "15%", textAlign: "center" }}>Pending</div>
-          <div style={{ flex: "15%", textAlign: "center" }}>Status</div>
+          <div style={{ flex: "15%", textAlign: "left" }}>Total Validate</div>
+          <div style={{ flex: "15%", textAlign: "left" }}>Pending</div>
+          <div style={{ flex: "15%", textAlign: "left" }}>Status</div>
           <div style={{ flex: "15%", textAlign: "center" }}>Action</div>
         </div>
-        {currentTableData.map((item) => {
+        {currentTableData.map((item, index) => {
           return (
-            <div className="table-head" style={{ color: "black" }}>
+            <div className="table-head" style={{ color: "black" }} key={index}>
               <div
-                style={{ flex: "25%", textAlign: "left", paddingLeft: "1vw" }}
+                style={{ flex: "1%", textAlign: "left", paddingLeft: "1vw" }}
               >
-                {item.id}
+                {/* {item.uploadID} */}
+                <input type="checkbox" />
               </div>
-              <div style={{ flex: "15%", textAlign: "center" }}>
-                {item.first_name}
+              <div
+                style={{
+                  flex: "20%",
+                  textAlign: "center",
+                }}
+              >
+                {item.uploadedOn}
               </div>
-              <div style={{ flex: "15%", textAlign: "center" }}>
-                {item.last_name}
+              <div style={{ flex: "20%", textAlign: "center" }}>
+                {item.uploadedBy}
               </div>
-              <div style={{ flex: "15%", textAlign: "center" }}>
-                {item.email}
+              <div style={{ flex: "10%", textAlign: "center" }}>
+                {item.discourseName}
+              </div>
+              <div style={{ flex: "10%", textAlign: "center" }}>
+                {item.totalSentences}
+              </div>
+              <div style={{ flex: "10%", textAlign: "center" }}>
+                {item["Validated USR"]}
               </div>
               <div style={{ flex: "15%", textAlign: "center", color: "red" }}>
-                {item.phone}
+                {item["Pending USR"]}
               </div>
-              <div style={{ flex: "15%", textAlign: "center" }}>
-                {item.first_name}
+              <div style={{ flex: "17%", textAlign: "center" }}>
+                {item.Status}
+              </div>
+              <div
+                style={{ flex: "15%", textAlign: "center", cursor: "pointer" }}
+              >
+                <MoreVertIcon onClick={handleClick} />
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleManageUSR}>Manage USR</MenuItem>
+                  <MenuItem onClick={handleClose}>Remove</MenuItem>
+                </Menu>
               </div>
             </div>
           );
