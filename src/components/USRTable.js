@@ -1,48 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopNavBar from "./topNavBar";
 import "../styles/USRTablepage.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { BASE_URL } from "./config";
 
 function USRTable() {
-  const [sentences, setSentences] = useState([
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer questionbdcksbdkbskdbksbdkbkds?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-    "what is your footer question?",
-  ]);
+  const [discourseData, setDiscourseData] = useState({
+    discourseContent: "",
+    discourseName: ""
+  });
+
+  const [sentences, setSentences] = useState([]);
+
+  const fetchDiscourseData = async () => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      console.error('Token not found in localStorage');
+      return;
+    }
+    
+    const requestBody = {
+      uploadID: "10016"
+    };
+
+    try {
+      const response = await fetch(BASE_URL+"/discourse/getDiscourseData", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': token,
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch discourse data');
+      }
+
+      const data = await response.json();
+      setDiscourseData(data[0]);
+
+      // Split the discourse content into sentences and set them in state
+      // const sentenceArray = data[0].discourseContent.split('।');
+      const delimiters = ['।', '.', '|']; // Add more delimiters as needed
+      const combinedDelimiters = delimiters.map(delimiter => `\\${delimiter}`).join('|');
+      const sentenceArray = data[0].discourseContent.split(new RegExp(combinedDelimiters));
+      setSentences(sentenceArray);
+    } catch (error) {
+      console.error('Error fetching discourse data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDiscourseData();
+  }, []);
 
   return (
     <div className="top">
       <div className="ba">
         <button>Back</button>
       </div>
-      {/* <div className="box"></div> */}
       <div className="box-middle">
-        <h3 className="Discourse">Discourse</h3>
-        <p className="Discourse-data">
-          Lorem ipsum dolor sit amet consectetur. Scelerisque gravida bibendum
-          in sed diam quis nullam. Tempor elementum morbi viverra lectus integer
-          non id. Nulla turpis sit a adipiscing sit feugiat neque. Quam tellus a
-          vitae pulvinar quis. Leo sed porta urna vitae congue molestie
-          ullamcorper in. Donec suspendisse ultrices nunc ac. Maecenas ac velit
-          in auctor. Duis ullamcorper tempor phasellus turpis euismod accumsan
-          tincidunt tortor eleifend. Hendrerit pulvinar purus sed nunc duis.
-        </p>
+      {/* <h3>Discourse</h3>
+        <p className="Discourse">Discourse Name: {discourseData.discourseName}</p>
+        <h3>Content</h3>
+        <p className="Discourse-data">{discourseData.discourseContent}</p> */}
+        <h3 className="Discourse">{discourseData.discourseName}</h3>
+        <p className="Discourse-data">{discourseData.discourseContent}</p>
       </div>
       <div className="box-top">
         <h3 className="sentence">Sentences</h3>

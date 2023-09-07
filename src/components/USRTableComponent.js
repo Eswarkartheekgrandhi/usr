@@ -1,709 +1,140 @@
-import React, { useState, useMemo } from "react";
-import TopNavBar from "./topNavBar.js";
+import React, { useState, useEffect } from 'react';
 import "../styles/USRtablenew.css";
-import USRTablePage from "./USRTable.js";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import icon from "../images/white.png";
+import { BASE_URL } from './config.js';
 
 export default function App() {
-  const [text, setText] = useState("abc");
-  const [visible, setVisible] = useState(false);
-  const [exportVisible, setExportVisible] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
 
-  const handleInputChange = (event) => {
-    setText(event.target.value);
-  };
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    const [data, setData] = useState([]);
+    const [n, setN] = useState(0);
+    const [columnEditable, setColumnEditable] = useState(false); // Track if the column is editable
 
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingBottom: "1vh",
-          fontWeight: "700",
-        }}
-      >
-        USR Table
-      </div>
-      <div className="USRnew-table-box">
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+    const handleInputChange = (event, rowIndex, field) => {
+        if (columnEditable) { // Check if the column is editable
+            const newData = [...data];
+            newData[rowIndex][field] = event.target.value;
+            setData(newData);
+        }
+    };
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+    const handleMenuItemClick = (action) => {
+        if (action === "Modify") {
+            setColumnEditable(true); // Make the whole column editable
+        } else if (action === "View") {
+            setColumnEditable(false); // Keep the column readonly
+        } else if (action === "Add") {
+            // Add a new column to the right
+            const newData = [...data];
+            const newColumnName = `NewColumn${n + 1}`;
+            newData.forEach((item) => (item[newColumnName] = ""));
+            setData(newData);
+            setN(n + 1);
+        }
+        setAnchorEl(null);
+    };
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+            if (!token) {
+                console.error('Token not found in localStorage');
+                return;
+            }
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+            const requestBody = {
+                "uploadID": "10011",
+                "sentenceID": "3a"
+            };
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-          <div className="USRnew-top-box">
-            <div>Concept</div>
+            try {
+                const response = await fetch(BASE_URL+"/usr/getData", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token,
+                    },
+                    body: JSON.stringify(requestBody)
+                });
 
-            <img
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              src={icon}
-              style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
-              alt=""
-            />
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem onClick={handleClose}>Modify</MenuItem>
-              <MenuItem onClick={handleClose}>View</MenuItem>
-              <MenuItem onClick={handleClose}>Add</MenuItem>
-            </Menu>
-          </div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Concept</div>
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
 
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Index</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Sem. Cat</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">G.N.P</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Dep-Rel</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Discourse</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Speaker view</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Scope</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Sentence Type</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div className="USRnew-top-box">Construction</div>
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-          <input
-            type="text"
-            value={text}
-            onChange={handleInputChange}
-            className="USRnew-top-box-edit"
-          />
-        </div>
-      </div>
-      <br />
-      <br />
-      <br />
-    </>
-  );
+                const responseData = await response.json();
+                setData(responseData.data);
+                setN(responseData.data.length);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    return (
+        <>
+            <div style={{ display: "flex", width: "100%", justifyContent: "center", alignItems: "center", paddingBottom: "1vh", fontWeight: "700" }}>USR Table</div>
+            <div className='USRnew-table-box'>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                    {Array.from({ length: n + 1 }).map((_, index) => (
+                        <div className='USRnew-top-box' key={index}>
+                            <div>Concept</div>
+                            <img
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                                src={icon}
+                                style={{ maxWidth: "2.5%", height: "auto", marginLeft: "4vw" }}
+                            />
+                            <Menu
+                                id={`basic-menu-${index}`}
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': `basic-button-${index}`,
+                                }}
+                            >
+                                <MenuItem onClick={() => handleMenuItemClick('Modify')}>Modify</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('View')}>View</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('Add')}>Add</MenuItem>
+                            </Menu>
+                        </div>
+                    ))}
+                </div>
+                {data.length > 0 && Object.keys(data[0]).map((field, columnIndex) => (
+                    <div style={{ display: "flex", flexDirection: "row" }} key={field}>
+                        <div className='USRnew-top-box'>{field}</div>
+                        {data.map((item, rowIndex) => (
+                            <input
+                                key={`${field}-${rowIndex}`}
+                                type="text"
+                                value={item[field]}
+                                onChange={(event) => handleInputChange(event, rowIndex, field)}
+                                readOnly={!columnEditable} // Make the input readonly based on columnEditable
+                                className='USRnew-top-box-edit'
+                            />
+                        ))}
+                    </div>
+                ))}
+            </div>
+            <br />
+            <br />
+            <br />
+        </>
+    );
 }
